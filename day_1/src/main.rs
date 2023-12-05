@@ -11,6 +11,11 @@ Handled that by assigning first and last to the first character seen, then movin
 
 Answer to Part 1 was 53_386
 Answer to Part 2 was 53_312
+
+Interesting alternative approach here that uses two passes of string (look from the front to the first number, and then from the back to the last number): 
+https://www.reddit.com/r/adventofcode/comments/1886cjs/2023_day_1_part_2_dont_overthink_it/
+Could possibly just do a regex for one pass, but I'd have to think about how that would work...
+Maybe something starting with a capturing group like this (?:zero|one|two|three|four|five|six|seven|eight|nine|\d)
 */
 
 const FILE: &str = "../inputs/day1_1.txt";

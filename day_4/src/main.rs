@@ -14,7 +14,10 @@ First step is to read the file line by line and create a set of the digits after
 We then need to find the number of matching numbers, N, for each card (the size of the set intersection between winning vals and our numbers) and then 2^(N-1) for each card. Sum up those values.
 
 There is a far shorter way to get the numbers, which is to split the line on ':', and then split the line on '|', and then collect that into two vecs split on whitespace.
-Then we can either compare the vecs or create the hashsets
+Then we can either compare the vecs or create the hashsets. I wanted to play a bit with using the two moving bounds as a method, though.
+
+Part 2 was pretty tricky to both get the logic correct, and then getting the hashmaps to play noce was a real challenge. The solution in python here was useful: https://topaz.github.io/paste/#XQAAAQAIAgAAAAAAAAA0m0pnuFI8c/fBNAqFGT96t+6hFWkgc4rhYg3OavPjy52TRbSU9RH//2qM0I01qeIjnq4+804xFL3MEKEwwErkJ1ut6TusVolJRw6KVozwmMRljD3CorANqGoPOQQRdmU17TINSHs2UcKGLG1ATg7zaLPEm8H7/E0YoLaUlhC2eUreBgXTudVm7mThe6R3THBglRE+KVLofOLL9U5bZWEC4LMcUskVMMKMJgcYKREi7NGk1WWLqy4v9pj+Vh+ZP9xhd16dreOcu01i6tv+DJ3Kf+WO3VhG8kdI4+hjJ/vL1aBbPd4Van1pijlQqLBPGjUvIEO1GlTESdDykr9eX2+cCk1oy6nNJEL3k1p2lxuV1+U4bOgev23ZgRALwVjnXqbLBP0s/+qMgoU=
+
 */
 
 const FILE: &str = "../inputs/day4_1.txt";
@@ -134,7 +137,7 @@ fn part_two() {
         match_vec.push(matches);
     }
 
-    for i in 0..match_vec.len() { 
+    for i in 0..match_vec.len() {
         card_count.insert(i, 1);
     }
 
