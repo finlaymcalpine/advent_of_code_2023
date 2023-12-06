@@ -1,4 +1,4 @@
-use itertools::Itertools;
+//use itertools::Itertools;
 use std::fs;
 use std::iter::zip;
 
@@ -15,7 +15,7 @@ You can only hold the button at the start of the race, and boats don't move unti
 const FILE: &str = "../inputs/day6_1.txt";
 
 fn parse_inputs(filename: &str) -> Vec<(u32, u32)> {
-    let file = fs::read_to_string(FILE).expect("File read failure");
+    let file = fs::read_to_string(filename).expect("File read failure");
 
     let (t, d) = file.split_once("\n").unwrap();
 
@@ -27,7 +27,7 @@ fn parse_inputs(filename: &str) -> Vec<(u32, u32)> {
 }
 
 fn updated_parser(filename: &str) -> (u64, u64) {
-    let file = fs::read_to_string(FILE).expect("File read failure");
+    let file = fs::read_to_string(filename).expect("File read failure");
 
     let (t, d) = file.split_once("\n").unwrap();
 
@@ -37,37 +37,41 @@ fn updated_parser(filename: &str) -> (u64, u64) {
     return (time, distance);
 }
 
+fn find_roots(t: f64, d: f64) -> (f64, f64) {
+    let disc = t * t - (4.0 * d);
+
+    let upper = (t + disc.powf(0.5)) / 2.0;
+    let lower = (t - disc.powf(0.5)) / 2.0;
+
+    return (lower, upper)
+}
+
 fn part_one() {
     let races = parse_inputs(FILE);
-    let mut race_wins: Vec<u32> = vec![];
+    let mut race_wins: Vec<f64> = vec![];
     
     for (time, distance) in races {
-        let mut wins: u32 = 0;
-        for i in 0..=time {
-            let d: u32 = (time - i) * i;
-            if d > distance {
-                wins += 1;
-            }
-        }
+        let time = time as f64;
+        let distance = distance as f64;
+        let roots = find_roots(time, distance);
+        // have to deal with edge cases where roots lie on the ints!!!
+        let wins = roots.1.floor() - roots.0.ceil() + 1.0;
+        
         race_wins.push(wins);
     }
 
-    let outcome: u32 = race_wins.iter().product();
+    let outcome: f64 = race_wins.iter().product();
 
     println!("{}", outcome)
 }
 
 fn part_two() {
     let (time, distance) = updated_parser(FILE);
+    let time = time as f64;
+    let distance = distance as f64;
+    let roots = find_roots(time, distance);
 
-    let mut wins: u64 = 0;
-    for i in 0..=time {
-        let d: u64 = (time - i) * i;
-        
-        if d > distance {
-            wins += 1;
-        }
-    }
+    let wins = roots.1.floor() - roots.0.ceil() + 1.0;
     
     println!("{}", wins)
 }
