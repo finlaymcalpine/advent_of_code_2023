@@ -19,3 +19,5 @@ Day 4 Update: This is getting to be a little more time consuming than I expected
   - Changed logic to use quadratic equation: still need to handle edge cases where roots are on the int, I think. Need to think more about the floor/ceil logic there.
 - Day 7: Logic was straightforward, although I applied sort_by_key in the wrong order at first. Actually coding it up was a real pain, and I need to refactor the whole thing! The muli-layered sort at the end is one of the ugliest things I've ever seen.
   - Part 2 was ok, again just a little awkward to code in Rust.
+- Day 8: Part 1 as per usual - felt quick to logic, but slow to code. Parsing logic was probably the more time consuming part. Got the code to run first try, and it had the right answer first time around.
+  - Part 2: looked online for inspiration on how to get this without trying some awful brute force. Saw references to lowest common multiple, and that seemed to do the trick. Once I knew we were looking for the LCM of the distinct, and looping, cycles it was ok to code up. It ran fast.
