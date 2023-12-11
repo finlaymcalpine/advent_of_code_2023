@@ -77,6 +77,84 @@ fn part_one() {
     println!("Part One: {}", sigma);
 }
 
+fn empty_space(file: &str) -> (Vec<Vec<char>>, Vec<usize>, Vec<usize>) {
+    let mut grid = vec![];
+    let mut e_rows = vec![];
+    let mut e_cols = vec![];
+
+    let file = File::open(file).expect("Cannot read file");
+    let reader = BufReader::new(file);
+
+    for (i, line) in reader.lines().enumerate() {
+        let s1: Vec<char> = line.unwrap().chars().collect();
+        if s1.iter().all(|x| *x == '.') {
+            e_rows.push(i);
+        }
+        grid.push(s1);
+    }
+
+    let mut col_num: usize = 0;
+
+    'columns: loop {
+        if col_num >= grid[0].len() {
+            break;
+        }
+        for row in grid.iter() {
+            if row[col_num] != '.' {
+                col_num += 1;
+                continue 'columns;
+            }
+        }
+        e_cols.push(col_num);
+        col_num += 1;
+    }
+
+    (grid, e_rows, e_cols)
+}
+
+fn new_manhattan(p1: &(usize, usize), p2: &(usize, usize), e_r: &[usize], e_c: &[usize]) -> usize {
+    let (x1, x2) = (p1.1.min(p2.1), p1.1.max(p2.1));
+    let (y1, y2) = (p1.0.min(p2.0), p1.0.max(p2.0));
+
+    let mut x_dist: usize = 0;
+    let mut y_dist: usize = 0;
+
+    for i in x1..x2 {
+        if e_c.contains(&i) {
+            x_dist += 1_000_000;
+        }
+        else {
+            x_dist += 1;
+        }
+    }
+
+    for i in y1..y2 {
+        if e_r.contains(&i) {
+            y_dist += 1_000_000;
+        }
+        else {
+            y_dist += 1;
+        }
+    }
+
+    x_dist + y_dist
+}
+
+fn part_two() {
+    let grid = empty_space(FILE);
+    let galaxies = find_galaxies(grid.0);
+    let mut sigma: usize = 0;
+
+    for (i, point) in galaxies.iter().enumerate() {
+        for other in &galaxies[i+1..galaxies.len()] {
+            sigma += new_manhattan(point, other, &grid.1, &grid.2);
+        }
+    }
+
+    println!("Part Two: {}", sigma);
+}
+
 fn main() {
     part_one();
+    part_two();
 }
